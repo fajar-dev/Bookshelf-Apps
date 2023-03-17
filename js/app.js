@@ -17,73 +17,80 @@ function addBook() {
   bookRow.setAttribute("data-id", book.id);
   bookRow.innerHTML = `
     <td>${book.title}</td>
-    <td>${book.author}</td>
-    <td>${book.year}</td>
+    <td><small class="text-muted">${book.author}</small></td>
+    <td><small class="text-muted">${book.year}</small></td>
     <td>
-      <button class="moveButton btn btn-warning">Pindahkan</button>
-      <button class="deleteButton btn btn-danger">Hapus</button>
+      <button class="moveButton btn btn-warning p-1 m-1">Pindahkan</button><br />
+      <button class="deleteButton btn btn-danger p-1 m-1">Hapus</button>
     </td>
   `;
   const moveButton = bookRow.querySelector(".moveButton");
   moveButton.addEventListener("click", () => {
     moveBook(book.id, bookshelfList);
+    saveBookshelf();
   });
   const deleteButton = bookRow.querySelector(".deleteButton");
   deleteButton.addEventListener("click", () => {
     deleteBook(book.id, bookRow);
+    saveBookshelf();
   });
 }
 
 function moveBook(id, bookshelfList) {
-const bookRow = bookshelfList.querySelector(`[data-id="${id}"]`);
-const isComplete = bookshelfList === document.getElementById("completeBookshelfList");
-const newBookshelfList = isComplete ? document.getElementById("incompleteBookshelfList") : document.getElementById("completeBookshelfList");
-const newBookRow = newBookshelfList.insertRow();
-newBookRow.setAttribute("data-id", id);
-newBookRow.innerHTML = bookRow.innerHTML;
-bookshelfList.deleteRow(bookRow.rowIndex);
-const moveButton = newBookRow.querySelector(".moveButton");
-moveButton.addEventListener("click", () => {
-moveBook(id, newBookshelfList);
-});
-const deleteButton = newBookRow.querySelector(".deleteButton");
-deleteButton.addEventListener("click", () => {
-deleteBook(id, newBookRow);
-});
+  const bookRow = bookshelfList.querySelector(`[data-id="${id}"]`);
+  const isComplete = bookshelfList === document.getElementById("completeBookshelfList");
+  const newBookshelfList = isComplete ? document.getElementById("incompleteBookshelfList") : document.getElementById("completeBookshelfList");
+  const newBookRow = newBookshelfList.insertRow();
+  newBookRow.setAttribute("data-id", id);
+  newBookRow.innerHTML = bookRow.innerHTML;
+  bookshelfList.deleteRow(bookRow.rowIndex);
+  const moveButton = newBookRow.querySelector(".moveButton");
+  moveButton.addEventListener("click", () => {
+  moveBook(id, newBookshelfList);
+  saveBookshelf();
+  });
+  const deleteButton = newBookRow.querySelector(".deleteButton");
+  deleteButton.addEventListener("click", () => {
+  deleteBook(id, newBookRow);
+  saveBookshelf();
+  });
 }
 
 function deleteBook(id, bookRow) {
 const bookshelfList = bookRow.parentNode;
 bookshelfList.deleteRow(bookRow.rowIndex);
+saveBookshelf();
 }
 
 function renderBookshelf() {
-const incompleteBookshelfList = document.getElementById("incompleteBookshelfList");
-const completeBookshelfList = document.getElementById("completeBookshelfList");
-const books = JSON.parse(localStorage.getItem("books")) || [];
-for (const book of books) {
-const bookRow = document.createElement("tr");
-bookRow.setAttribute("data-id", book.id);
-bookRow.innerHTML = `
-  <td>${book.title}</td>
-  <td>${book.author}</td>
-  <td>${book.year}</td>
-  <td>
-    <button class="moveButton btn btn-warning">Pindahkan</button>
-    <button class="deleteButton btn btn-danger">Hapus</button>
-  </td>
-`;
-const bookshelfList = book.isComplete ? completeBookshelfList : incompleteBookshelfList;
-bookshelfList.appendChild(bookRow);
-const moveButton = bookRow.querySelector(".moveButton");
-moveButton.addEventListener("click", () => {
-  moveBook(book.id, bookshelfList);
-});
-const deleteButton = bookRow.querySelector(".deleteButton");
-deleteButton.addEventListener("click", () => {
-  deleteBook(book.id, bookRow);
-});
-}
+  const incompleteBookshelfList = document.getElementById("incompleteBookshelfList");
+  const completeBookshelfList = document.getElementById("completeBookshelfList");
+  const books = JSON.parse(localStorage.getItem("books")) || [];
+  for (const book of books) {
+  const bookRow = document.createElement("tr");
+  bookRow.setAttribute("data-id", book.id);
+  bookRow.innerHTML = `
+    <td>${book.title}</td>
+    <td><small class="text-muted">${book.author}</small></td>
+    <td><small class="text-muted">${book.year}</small></td>
+    <td class="text-right">
+      <button class="moveButton btn btn-warning p-1 m-1">Pindahkan</button><br />
+      <button class="deleteButton btn btn-danger p-1 m-1">Hapus</button>
+    </td>
+  `;
+  const bookshelfList = book.isComplete ? completeBookshelfList : incompleteBookshelfList;
+  bookshelfList.appendChild(bookRow);
+  const moveButton = bookRow.querySelector(".moveButton");
+  moveButton.addEventListener("click", () => {
+    moveBook(book.id, bookshelfList);
+    saveBookshelf();
+  });
+  const deleteButton = bookRow.querySelector(".deleteButton");
+  deleteButton.addEventListener("click", () => {
+    deleteBook(book.id, bookRow);
+    saveBookshelf();
+  });
+  }
 }
 
 function saveBookshelf() {
@@ -98,8 +105,10 @@ const book = {
   year: bookRow.cells[2].textContent,
   isComplete: false,
 };
+// console.log( bookRow.cells[0].textContent)
 books.push(book);
 }
+
 for (const bookRow of completeBookshelfList.rows) {
 const book = {
   id: bookRow.getAttribute("data-id"),

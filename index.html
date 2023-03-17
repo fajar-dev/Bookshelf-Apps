@@ -40,7 +40,7 @@
                         <div class="col-md-12">
                           <div class="form-group">
                             <label class="label" for="year">Tahun</label>
-                            <input type="text" class="form-control"  id="year" name="year" placeholder="Tahun" required>
+                            <input type="number" class="form-control"  id="year" name="year" placeholder="Tahun" required>
                           </div>
                         </div>
                         <div class="col-md-12">
@@ -64,16 +64,8 @@
               <div class="col-lg-6">
                 <div class="book-wrap w-100 p-md-5 p-4">
                   <h5 class="mb-4">Belum Dibaca</h5>
-                  <table class="table table-striped bg-light" id="incompleteBookshelfList">
-                    <thead>
-                      <tr>
-                        <th>Judul</th>
-                        <th>Penulis</th>
-                        <th>Tahun</th>
-                        <th>Aksi</th>
-                      </tr>
-                    </thead>
-                    <tbody>
+                  <table class="table table-dark bg-dark" id="incompleteBookshelfList">
+                    <tbody id="incompleteBookshelfrow">
                     </tbody>
                   </table>
                 </div>
@@ -81,16 +73,8 @@
               <div class="col-lg-6">
                 <div class="book-wrap w-100 p-md-5 p-4">
                   <h5 class="mb-4">Selesai Dibaca</h5>
-                    <table class="table table-striped bg-light" id="completeBookshelfList">
-                      <thead>
-                        <tr>
-                          <th>Judul</th>
-                          <th>Penulis</th>
-                          <th>Tahun</th>
-                          <th>Aksi</th>
-                        </tr>
-                      </thead>
-                      <tbody>
+                    <table class="table table-dark bg-dark" id="completeBookshelfList">
+                      <tbody id="completeBookshelfrow">
                       </tbody>
                     </table>
                 </div>
